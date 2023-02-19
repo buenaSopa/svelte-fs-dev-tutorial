@@ -1,7 +1,9 @@
 tasks:
   - init: npm i
     command: npm run dev
-
+vscode:
+  extensions:
+    - svelte.svelte-vscode
 ports:
   - port: 5173
     visibility: private

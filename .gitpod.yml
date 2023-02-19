@@ -1,3 +1,7 @@
 tasks:
   - init: npm i
     command: npm run dev
+
+ports:
+  - port: 5173
+    visibility: private

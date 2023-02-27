@@ -54,14 +54,16 @@
     <form action="" method="" class="save grid grid-cols-9 text-slate-50">
         <input class="col-span-8" type="text">
         <button>
-            <img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/save--v1.png"/>
+            <img 
+            width="35%"
+            src="https://img.icons8.com/ios-glyphs/30/FFFFFF/save--v1.png"/>
         </button>
     </form>
 
     <form action="" method="" class="delete">
         <button>
             <img 
-            width="60%"
+            width="40%"
             src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/FFFFFF/external-delete-multimedia-kiranshastry-lineal-kiranshastry.png"/>
         </button>
     </form>

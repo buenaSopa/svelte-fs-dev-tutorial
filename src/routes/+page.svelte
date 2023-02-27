@@ -33,6 +33,7 @@
 
 <div class="todos">
     <h1 class="text-center text-4xl p-6 ">{title}</h1>
+    <form action="" method="" class="new">
         <input type="text" name="text" aria-label="Add a todo" placeholder="+ type to add a todo" class="placeholder:text-slate-50">
     </form>
     

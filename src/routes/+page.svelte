@@ -1,7 +1,36 @@
-<script>
+
+<script lang="ts">
     import TodoItem from "$lib/todo-item.svelte";
 
+    let promise = fetchTodo()
     const title = 'Todo'
+
+    async function fetchTodo() {
+        const res = await fetch('/todo')
+        const data = await res.json()
+
+        console.log(data)
+
+        if (res.ok) {
+            return data
+        } else {
+            throw new Error(data)
+        }
+
+    }
+
+    async function addTodo(event: { target: any; }) {
+        const form = event.target
+        const data = new FormData(form)
+
+        await fetch('/todo', {
+            method: 'POST',
+            body: data
+        })
+
+        promise = fetchTodo()
+    }
+
 </script>
 
 <svelte:head>
@@ -25,20 +54,22 @@
         @apply outline-none;
     }
 
-    .todos :global(form) {
-        @apply shadow-2xl;
-    }
-
 </style>
 
 <div class="todos">
     <h1 class="text-center text-4xl p-6 ">{title}</h1>
-    <form action="" method="" class="new">
+    <form on:submit|preventDefault={addTodo} class="new">
         <input type="text" name="text" aria-label="Add a todo" placeholder="+ type to add a todo" class="placeholder:text-slate-50">
     </form>
-    
-    <TodoItem />
-    <TodoItem />
-    <TodoItem />    
+
+    {#await promise}
+        <p>Fetching...</p>
+    {:then data}
+        {#each data as todo }
+            <TodoItem todo={todo}/>  
+        {/each}
+    {:catch error}
+        <div class="error">{error.message}</div>
+    {/await}
 </div>
 

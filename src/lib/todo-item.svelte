@@ -1,4 +1,6 @@
-<script>
+<script lang='ts'>
+    export let todo: Todo;
+
     const done = "✓"
     let toggled = false
 </script>
@@ -45,25 +47,27 @@
 
 <div class="slide">
     <form action="" method="" class="toggle">
-        <input type="hidden" name="done" value="">
+        <input type="hidden" name="done" value="{todo.done}" >
         <button aria-label="Mark done/not done" 
         class:opacity-25="{toggled===true}"
         on:click={ ()=>{ toggled = !toggled } }>{done}</button>
     </form>
 
     <form action="" method="" class="save grid grid-cols-9 text-slate-50">
-        <input class="col-span-8" type="text">
+        <input class="col-span-8" type="text" value="{todo.text}">
         <button>
+            <!-- svelte-ignore a11y-missing-attribute -->
             <img 
-            width="35%"
+            width="30px"
             src="https://img.icons8.com/ios-glyphs/30/FFFFFF/save--v1.png"/>
         </button>
     </form>
 
     <form action="" method="" class="delete">
         <button>
+            <!-- svelte-ignore a11y-missing-attribute -->
             <img 
-            width="40%"
+            width="35px"
             src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/FFFFFF/external-delete-multimedia-kiranshastry-lineal-kiranshastry.png"/>
         </button>
     </form>

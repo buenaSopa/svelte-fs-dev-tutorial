@@ -1,23 +1,25 @@
 import type { RequestHandler } from "@sveltejs/kit"
+import { get } from "svelte/store"
+import { todos as storeTodos } from "$lib/store"
 
-let todos: Todo[] = []
+//GET
+export const GET: RequestHandler = () => {
+  return new Response(JSON.stringify(get(storeTodos)))
+}
 
+//POST
 export const POST: RequestHandler = async (event) => {
   const data = await event.request.formData()
   const body = data.get("text")?.toString() ?? ''
 
-  todos.push({
+  storeTodos.update((value: any) => ([...value, {
+    uid: `${Date.now()}`,
     created_at: new Date(),
     text: body,
     done: false
-  })
+  }]))
   
   return new Response(JSON.stringify({
-    success: "FALSE FALSE FALSE u r always wrong retard"
+    success: true
   }))
-}
-
-export const GET: RequestHandler = async () => {
-
-  return new Response(JSON.stringify(todos))
 }

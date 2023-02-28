@@ -1,8 +1,29 @@
 <script lang='ts'>
+    export let reload: () => void
     export let todo: Todo;
 
     const done = "✓"
     let toggled = false
+
+    async function deleteTodo() {
+        await fetch('/todo/'+todo.uid, {
+            method: 'DELETE',
+        })        
+        reload()
+    }
+
+    async function editTodo(event: { target: any; }) {
+        const form = event.target
+        const data = new FormData(form)
+
+        await fetch('/todo/'+todo.uid, {
+            method: 'PATCH',
+            body: data,
+        })
+        reload()
+    }
+
+
 </script>
 
 <style>
@@ -46,15 +67,15 @@
 </style>
 
 <div class="slide">
-    <form action="" method="" class="toggle">
+    <form class="toggle">
         <input type="hidden" name="done" value="{todo.done}" >
         <button aria-label="Mark done/not done" 
         class:opacity-25="{toggled===true}"
         on:click={ ()=>{ toggled = !toggled } }>{done}</button>
     </form>
 
-    <form action="" method="" class="save grid grid-cols-9 text-slate-50">
-        <input class="col-span-8" type="text" value="{todo.text}">
+    <form class="save grid grid-cols-9 text-slate-50" on:submit|preventDefault={editTodo}>
+        <input class="col-span-8" type="text" name="text" value="{todo.text}">
         <button>
             <!-- svelte-ignore a11y-missing-attribute -->
             <img 
@@ -63,7 +84,7 @@
         </button>
     </form>
 
-    <form action="" method="" class="delete">
+    <form on:submit|preventDefault={deleteTodo} class="delete">
         <button>
             <!-- svelte-ignore a11y-missing-attribute -->
             <img 

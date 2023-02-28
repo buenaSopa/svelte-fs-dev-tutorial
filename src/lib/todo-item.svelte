@@ -3,7 +3,6 @@
     export let todo: Todo;
 
     const done = "✓"
-    let toggled = false
 
     async function deleteTodo() {
         await fetch('/todo/'+todo.uid, {
@@ -12,7 +11,7 @@
         reload()
     }
 
-    async function editTodo(event: { target: any; }) {
+    async function editTodoText(event: { target: any; }) {
         const form = event.target
         const data = new FormData(form)
 
@@ -23,6 +22,16 @@
         reload()
     }
 
+    async function editTodoDone(event: { target: any; }) {
+        const form = event.target
+        const data = new FormData(form)
+
+        await fetch('/todo/'+todo.uid, {
+            method: 'PATCH',
+            body: data,
+        })
+        reload()
+    }
 
 </script>
 
@@ -66,15 +75,14 @@
 
 </style>
 
-<div class="slide">
+<div class="slide" class:opacity-40="{todo.done}" on:submit|preventDefault={editTodoDone}>
     <form class="toggle">
         <input type="hidden" name="done" value="{todo.done}" >
-        <button aria-label="Mark done/not done" 
-        class:opacity-25="{toggled===true}"
-        on:click={ ()=>{ toggled = !toggled } }>{done}</button>
+        <button aria-label="Mark done/not done"
+        on:click={ ()=>{ todo.done = !todo.done } }>{done}</button>
     </form>
 
-    <form class="save grid grid-cols-9 text-slate-50" on:submit|preventDefault={editTodo}>
+    <form class="save grid grid-cols-9 text-slate-50" on:submit|preventDefault={editTodoText}>
         <input class="col-span-8" type="text" name="text" value="{todo.text}">
         <button>
             <!-- svelte-ignore a11y-missing-attribute -->

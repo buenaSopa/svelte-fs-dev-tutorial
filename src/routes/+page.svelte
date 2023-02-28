@@ -1,8 +1,39 @@
-<script>
+
+<script lang="ts">
     import TodoItem from "$lib/todo-item.svelte";
 
+    let promise = fetchTodo()
+    let input = ''
     const title = 'Todo'
-</script>
+
+    async function fetchTodo() {
+        const res = await fetch('/todo')
+        const data = await res.json()
+        
+        if (res.ok) {
+            return data
+        } else {
+            throw new Error(data)
+        }
+    }
+
+    async function addTodo(event: { target: any; }) {
+        const form = event.target
+        const data = new FormData(form)
+        await fetch('/todo', {
+            method: 'POST',
+            body: data
+        })
+
+        input = ''
+        reload()
+    }
+
+    function reload() {
+        promise = fetchTodo()
+    }
+
+</script> 
 
 <svelte:head>
     <title>{title}</title>
@@ -25,20 +56,23 @@
         @apply outline-none;
     }
 
-    .todos :global(form) {
-        @apply shadow-2xl;
-    }
-
 </style>
 
 <div class="todos">
     <h1 class="text-center text-4xl p-6 ">{title}</h1>
-    <form action="" method="" class="new">
-        <input type="text" name="text" aria-label="Add a todo" placeholder="+ type to add a todo" class="placeholder:text-slate-50">
+    <form on:submit|preventDefault={addTodo} class="new">
+        <input type="text" name="text" bind:value={input} aria-label="Add a todo" placeholder="+ type to add a todo" class="placeholder:text-slate-50">
     </form>
-    
-    <TodoItem />
-    <TodoItem />
-    <TodoItem />    
+
+    {#await promise}
+        <p>Fetching...</p>
+    {:then data}
+        {#each data as todo }
+            <TodoItem todo={todo} reload={reload}/>  
+        {/each}
+    {:catch error}
+        <div class="error">{error.message}</div>
+    {/await}
+
 </div>
 

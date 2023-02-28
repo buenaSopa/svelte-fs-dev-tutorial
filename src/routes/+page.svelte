@@ -65,7 +65,7 @@
     </form>
 
     {#await promise}
-        <p>Fetching...</p>
+        <p></p>
     {:then data}
         {#each data as todo }
             <TodoItem todo={todo} reload={reload}/>  

@@ -3,11 +3,28 @@ image: gitpod/workspace-postgres
 tasks:
   - init: npm i
     command: npm run dev
+    env:
+      DATABASE_URL: postgresql://gitpod@localhost/todos
+
+  - command: npx prisma studio
+    env:
+      DATABASE_URL: postgresql://gitpod@localhost/todos
+
+
 vscode:
   extensions:
     - svelte.svelte-vscode
+
+    - Prisma.prisma
+    
+    - ms-vscode.vscode-typescript-next
+
+
+
 ports:
   - port: 5173
     onOpen: open-browser
   - port: 5432
     onOpen: ignore
+  - port: 5555
+    onOpen: open-browser

@@ -7,10 +7,8 @@ const config = {
 	// for more information about preprocessors
 	preprocess: vitePreprocess(),
 	kit: {
-		adapter: adapter()
-	},
-	csrf: {
-		checkOrigin: false,
+		adapter: adapter(),
+		csrf: false
 	}
 };
 

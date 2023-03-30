@@ -1,43 +1,41 @@
 <script lang='ts'>
-    export let reload: () => void
     export let todo: Todo;
 
-    const done = "✓"
-
-    async function deleteTodo() {
-        await fetch('/todo/'+todo.uid, {
-            method: 'DELETE',
-        })        
-        reload()
-    }
-
-    async function editTodoText(event: { target: any; }) {
-        const form = event.target
-        const data = new FormData(form)
-
-        await fetch('/todo/'+todo.uid, {
-            method: 'PATCH',
-            body: data,
-        })
-        reload()
-    }
-
-    async function editTodoDone(event: { target: any; }) {
-        const form = event.target
-        const data = new FormData(form)
-
-        await fetch('/todo/'+todo.uid, {
-            method: 'PATCH',
-            body: data,
-        })
-        reload()
-    }
-
 </script>
+<div class="slide" class:opacity-40="{todo.done}">
+    <form class="toggle"  method="POST" action="?/updateStatus">
+        <input type="hidden" name="done" value="{todo.done}" >
+        <input type="hidden" name="uid" value={todo.uid}>
+        <button aria-label="Mark done/not done"
+        on:click={ ()=>{ todo.done = !todo.done } }>{todo.done ? "✓" : "✖"}</button>
+    </form>
+
+    <form class="save grid grid-cols-9 text-slate-50" method="POST" action="?/updateTodo">
+        <input class="col-span-8" type="text" name="text" value="{todo.text}">
+        <input type="hidden" name="uid" value={todo.uid}>
+        <button>
+            <img 
+            width="30px"
+            alt="saveee"
+            src="https://img.icons8.com/ios-glyphs/30/FFFFFF/save--v1.png"/>
+        </button>
+    </form>
+
+    <!-- action="todo/{todo.uid}" method="delete" -->
+    <form class="delete" method="POST" action="?/removeTodo">
+        <input type="hidden" name="uid" value={todo.uid}>
+        <button type="submit">
+            <img 
+            width="30px"
+            alt="delete"
+            src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/FFFFFF/external-delete-multimedia-kiranshastry-lineal-kiranshastry.png"/>
+        </button>
+    </form>
+</div>
 
 <style>
     .slide {
-        @apply grid grid-cols-12 text-black text-center my-5 bg-slate-900 bg-opacity-25 px-1 py-3 rounded-lg w-11/12 mx-auto;
+        @apply grid grid-cols-8 text-black text-center my-5 bg-slate-900 bg-opacity-25 px-1 py-3 rounded-lg w-11/12 mx-auto;
     }
 
     .toggle {
@@ -49,7 +47,7 @@
     }
 
     .save {
-        @apply col-span-10;
+        @apply col-span-6;
     }
     
     .save input {
@@ -61,43 +59,14 @@
     }
 
     .delete {
-        @apply col-span-1 flex ;
+        @apply col-span-1;
     }
 
     .delete button img {
-        @apply  mx-auto;
+        @apply  mx-auto pt-1;
     }
 
     input:focus {
         @apply outline-none;
     }
-
-
 </style>
-
-<div class="slide" class:opacity-40="{todo.done}" on:submit|preventDefault={editTodoDone}>
-    <form class="toggle">
-        <input type="hidden" name="done" value="{todo.done}" >
-        <button aria-label="Mark done/not done"
-        on:click={ ()=>{ todo.done = !todo.done } }>{done}</button>
-    </form>
-
-    <form class="save grid grid-cols-9 text-slate-50" on:submit|preventDefault={editTodoText}>
-        <input class="col-span-8" type="text" name="text" value="{todo.text}">
-        <button>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <img 
-            width="30px"
-            src="https://img.icons8.com/ios-glyphs/30/FFFFFF/save--v1.png"/>
-        </button>
-    </form>
-
-    <form on:submit|preventDefault={deleteTodo} class="delete">
-        <button>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <img 
-            width="35px"
-            src="https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/FFFFFF/external-delete-multimedia-kiranshastry-lineal-kiranshastry.png"/>
-        </button>
-    </form>
-</div>

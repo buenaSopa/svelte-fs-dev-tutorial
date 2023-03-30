@@ -1,43 +1,39 @@
-
 <script lang="ts">
     import TodoItem from "$lib/todo-item.svelte";
-
-    let promise = fetchTodo()
-    let input = ''
-    const title = 'Todo'
-
-    async function fetchTodo() {
-        const res = await fetch('/todo')
-        const data = await res.json()
-        
-        if (res.ok) {
-            return data
-        } else {
-            throw new Error(data)
-        }
+    import type { ActionData } from "./$types";
+    
+    type PageData = {
+        todos: Array<Todo>;
     }
-
-    async function addTodo(event: { target: any; }) {
-        const form = event.target
-        const data = new FormData(form)
-        await fetch('/todo', {
-            method: 'POST',
-            body: data
-        })
-
-        input = ''
-        reload()
-    }
-
-    function reload() {
-        promise = fetchTodo()
-    }
+    
+    export let data: PageData
+    export let form: ActionData
 
 </script> 
 
 <svelte:head>
-    <title>{title}</title>
+    <title>Todo</title>
 </svelte:head>
+
+<pre>
+    {JSON.stringify(data, null, 2)}
+</pre>
+
+<div class="todos">
+    <h1 class="text-center text-4xl p-6 ">Todo</h1>
+    <form method="POST" class="new" action="?/addTodo">
+        <input type="text" name="text" aria-label="Add a todo" placeholder="+ type to add a todo" class="placeholder:text-slate-50">
+    </form>
+
+    {#if form?.missing}
+        <p>This field is required!</p>    
+    {/if}
+
+    {#each data.todos as todo }
+        <TodoItem todo={todo}/>  
+    {/each}
+
+</div>
 
 <style>
     .todos {
@@ -57,22 +53,4 @@
     }
 
 </style>
-
-<div class="todos">
-    <h1 class="text-center text-4xl p-6 ">{title}</h1>
-    <form on:submit|preventDefault={addTodo} class="new">
-        <input type="text" name="text" bind:value={input} aria-label="Add a todo" placeholder="+ type to add a todo" class="placeholder:text-slate-50">
-    </form>
-
-    {#await promise}
-        <p></p>
-    {:then data}
-        {#each data as todo }
-            <TodoItem todo={todo} reload={reload}/>  
-        {/each}
-    {:catch error}
-        <div class="error">{error.message}</div>
-    {/await}
-
-</div>
 

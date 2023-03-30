@@ -1,10 +1,10 @@
 type Todo = {
-    uid: string;
+    uid: String;
     created_at: Date;
-    text: string;
+    text: String;
     done: boolean
 }
 
 interface params {
-    uid: string
+    uid: String
 }

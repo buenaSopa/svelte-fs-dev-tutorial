@@ -55,14 +55,14 @@
 </script>
 
 <div class="slide" class:opacity-40="{todo.done}">
-    <form class="toggle"  method="POST" action="?/updateStatus" use:enhance={updateStatus}>
+    <form class="toggle"  method="POST" action="/todo?/updateStatus" use:enhance={updateStatus}>
         <input type="hidden" name="done" value="{todo.done}" >
         <input type="hidden" name="uid" value={todo.uid}>
         <button aria-label="Mark done/not done"
         on:click={ ()=>{ todo.done = !todo.done } }>{todo.done ? "✓" : "✖"}</button>
     </form>
 
-    <form class="save grid grid-cols-9 text-slate-50" method="POST" action="?/updateTodo" use:enhance={updateTodo}>
+    <form class="save grid grid-cols-9 text-slate-50" method="POST" action="/todo?/updateTodo" use:enhance={updateTodo}>
         <input class="col-span-8" type="text" name="text" value="{todo.text}">
         <input type="hidden" name="uid" value={todo.uid}>
         <button>
@@ -74,7 +74,7 @@
     </form>
 
     <!-- action="todo/{todo.uid}" method="delete" -->
-    <form class="delete" method="POST" action="?/removeTodo" use:enhance={removeTodo}>
+    <form class="delete" method="POST" action="/todo?/removeTodo" use:enhance={removeTodo}>
         <input type="hidden" name="uid" value={todo.uid}>
         <button type="submit">
             <img 

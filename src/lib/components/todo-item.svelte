@@ -9,7 +9,6 @@
 
     const updateTodo: SubmitFunction = () => {
         loading = true
-        notifications.warning('Wait a moment...', 500)
 
         return async ({ update, result }) => {
             loading = false
@@ -24,7 +23,6 @@
 
     const updateStatus: SubmitFunction = () => {
         loading = true
-        notifications.warning('Wait a moment...', 500)
 
         return async ({ update, result }) => {
             loading = false
@@ -39,7 +37,6 @@
 
     const removeTodo: SubmitFunction = () => {
         loading = true
-        notifications.warning('Wait a moment...', 500)
 
         return async ({ update, result }) => {
             loading = false

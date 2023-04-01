@@ -2,7 +2,6 @@
     import { enhance, type SubmitFunction } from "$app/forms";
     import TodoItem from "$lib/components/todo-item.svelte";
     import { notifications } from "$lib/utils/notifications";
-    import Toast from "$lib/components/Toast.svelte";
     import type { ActionData } from "./$types";
     
     type PageData = {

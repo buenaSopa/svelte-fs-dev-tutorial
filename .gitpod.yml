@@ -19,6 +19,8 @@ vscode:
     
     - ms-vscode.vscode-typescript-next
 
+    - garlandcrow.vscode-svelte-pluskit-snippets
+
 
 
 ports:

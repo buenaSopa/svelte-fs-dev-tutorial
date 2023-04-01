@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { enhance } from "$app/forms";
     import TodoItem from "$lib/todo-item.svelte";
     import type { ActionData } from "./$types";
     
@@ -15,13 +16,9 @@
     <title>Todo</title>
 </svelte:head>
 
-<pre>
-    {JSON.stringify(data, null, 2)}
-</pre>
-
 <div class="todos">
     <h1 class="text-center text-4xl p-6 ">Todo</h1>
-    <form method="POST" class="new" action="?/addTodo">
+    <form method="POST" class="new" action="?/addTodo" use:enhance>
         <input type="text" name="text" aria-label="Add a todo" placeholder="+ type to add a todo" class="placeholder:text-slate-50">
     </form>
 
@@ -34,6 +31,10 @@
     {/each}
 
 </div>
+
+<pre>
+    {JSON.stringify(data, null, 2)}
+</pre>
 
 <style>
     .todos {

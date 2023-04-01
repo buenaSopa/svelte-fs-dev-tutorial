@@ -26,6 +26,7 @@
 	"type": "module",
 	"dependencies": {
 		"@prisma/client": "^4.11.0",
+		"@sveltech/routify": "^1.9.10",
 		"dotenv": "^16.0.3",
 		"zod": "^3.21.4",
 		"zod-form-data": "^2.0.1"

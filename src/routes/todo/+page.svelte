@@ -15,7 +15,6 @@
 
     const addTodo: SubmitFunction = () => {
         loading = true
-        notifications.warning('Wait a moment...', 500)
 
         return async ({ update, result }) => {
             loading = false

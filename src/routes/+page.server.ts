@@ -2,11 +2,14 @@ import { getTodos, updateStatus, updateTodos } from "$lib/store";
 import type { PageServerLoad } from "./$types";
 import { addTodos, removeTodos } from "$lib/store";
 import { fail, type Actions } from "@sveltejs/kit";
+import { sleep } from "$lib/utils/utils";
 
 export const load: PageServerLoad = async () => {
     const todos = getTodos() 
     return { todos }
 }
+
+let response = true;
 
 export const actions: Actions = {
     addTodo: async ({ request }) => {
@@ -17,6 +20,8 @@ export const actions: Actions = {
             return fail(400, { todo, missing: true })
         }
 
+        await sleep(1000)
+
         addTodos(todo)
 
         return { success: true }
@@ -25,6 +30,10 @@ export const actions: Actions = {
     removeTodo:async ({ request }) => {
         const formData = await request.formData()
         const id = String(formData.get('uid'))
+
+        if (!response) {
+            return fail(400, { response })
+        }
 
         removeTodos(id)
 
@@ -36,6 +45,10 @@ export const actions: Actions = {
         const id = String(formData.get('uid'))
         const body = String(formData.get('text'))
 
+        if (!response) {
+            return fail(400, { response })
+        }
+
         updateTodos(id, body)
 
         return { success: true }
@@ -45,6 +58,10 @@ export const actions: Actions = {
         const formData = await request.formData()
         const id = String(formData.get('uid'))
         const done = String(formData.get('done'))
+
+        if (!response) {
+            return fail(400, { response })
+        }
 
         updateStatus(id, done)
 

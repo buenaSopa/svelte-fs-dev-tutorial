@@ -1,8 +1,6 @@
-import { getTodos, updateStatus, updateTodos } from "$lib/store";
-import { addTodos, removeTodos } from "$lib/store";
 import { fail, type Actions } from "@sveltejs/kit";
-import { sleep } from "$lib/utils/utils";
 import type { PageServerLoad } from "./$types";
+import { addTodos, getTodos, removeTodos, updateTodos, updateStatus } from "$lib/database";
 
 export const load: PageServerLoad = async () => {
     const todos = getTodos() 
